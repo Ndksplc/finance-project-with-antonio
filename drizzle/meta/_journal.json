@@ -1,0 +1,34 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1721922039555,
+      "tag": "0000_breezy_masked_marvel",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1721923017911,
+      "tag": "0001_mature_ikaris",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1726638740164,
+      "tag": "0002_nasty_colossus",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "5",
+      "when": 1726813865693,
+      "tag": "0003_stormy_steel_serpent",
+      "breakpoints": true
+    }
+  ]
+}

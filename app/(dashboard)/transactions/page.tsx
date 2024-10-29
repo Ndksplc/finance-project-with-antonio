@@ -16,7 +16,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import { useBulkDeleteTransactions } from "@/app/features/transactions/api/use-delete-bulk-transactions";
 import { useBulkCreateTransactions } from "@/app/features/transactions/api/use-create-bulk-transactions";
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import UploadCSVFileButton from "./upload-button";
 import ImportCard from "./import-card";
 import { transactions as transactionsSchema } from "@/db/schema";
@@ -93,45 +93,49 @@ const TransactionsPage = () => {
   )
   if(variant === VARIANT.IMPORT){
     return (
-      <>
-        <AccountSelectionDialog/>
-        <ImportCard data={importResult.data}
-        onCancel={onCancelImport}
-        onSubmit={onSubmitImport}/>
-      </>
+      <Suspense fallback={<div>Loading...</div>}>
+        <>
+          <AccountSelectionDialog/>
+          <ImportCard data={importResult.data}
+          onCancel={onCancelImport}
+          onSubmit={onSubmitImport}/>
+        </>
+      </Suspense>
     )
   }
   return (
-    <div className="max-w-screen-2xl mx-auto w-full pb-10 -m-24">
-      <Card className="border-none drop-shadow-sm">
-      <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between" >
-        <CardTitle className=" text-xl line-clamp-1">
-          Transaction History
-        </CardTitle>
-        <div className="flex flex-col lg:flex-row items-center gap-x-2 gap-y-2">
-          <Button size="sm" className="w-full lg:w-auto" asChild>
-            <UploadCSVFileButton onUpload={onUpload}/>
-          </Button>
-          <Button size="sm" onClick={newTransaction.onOpen} className="w-full lg:w-auto">
-            <Plus className="size-4 mr-2"/>
-            Add New Transaction 
-          </Button>
-        </div>
-        
-      </CardHeader>     
-       <CardContent>
-        <DataTable columns={columns}
-         data={transactions}
-         filterKey="date" onDelete={(row)=>{
-          const ids = row.map((r)=>(r.original.id));
-          deleteBulkTransaction.mutate({ids});
-         }}
-         disabled={isDisabled}
-         />
-      </CardContent>
-    </Card>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="max-w-screen-2xl mx-auto w-full pb-10 -m-24">
+        <Card className="border-none drop-shadow-sm">
+        <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between" >
+          <CardTitle className=" text-xl line-clamp-1">
+            Transaction History
+          </CardTitle>
+          <div className="flex flex-col lg:flex-row items-center gap-x-2 gap-y-2">
+            <Button size="sm" className="w-full lg:w-auto" asChild>
+              <UploadCSVFileButton onUpload={onUpload}/>
+            </Button>
+            <Button size="sm" onClick={newTransaction.onOpen} className="w-full lg:w-auto">
+              <Plus className="size-4 mr-2"/>
+              Add New Transaction 
+            </Button>
+          </div>
+          
+        </CardHeader>     
+        <CardContent>
+          <DataTable columns={columns}
+          data={transactions}
+          filterKey="date" onDelete={(row)=>{
+            const ids = row.map((r)=>(r.original.id));
+            deleteBulkTransaction.mutate({ids});
+          }}
+          disabled={isDisabled}
+          />
+        </CardContent>
+      </Card>
 
-    </div>
+      </div>
+    </Suspense>
   )
 }
  

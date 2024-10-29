@@ -9,6 +9,7 @@ import {Tooltip,
 } from "recharts";
 
 import { CustomTooltip } from "./customTooltip";
+import { useEffect, useState } from "react";
 
 
 type Props = {
@@ -20,7 +21,13 @@ type Props = {
 }
 
 const AreaVariant = ({data}:Props) => {
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
   return ( 
+   
     <ResponsiveContainer width="100%" height={350}>
       <AreaChart data={data}>
         <CartesianGrid strokeDasharray="3 3"/>
@@ -51,7 +58,7 @@ const AreaVariant = ({data}:Props) => {
         fill="url(#income)"
         className="drop-shadow-sm"
         style={{ fill: "url(#income) !important" }}/>
-        <Tooltip content={<CustomTooltip />}/>
+        {<Tooltip content={<CustomTooltip />}/>}
          <Area
         type="monotone"
         dataKey="expenses"
@@ -66,7 +73,8 @@ const AreaVariant = ({data}:Props) => {
      
       
       </AreaChart>
-    </ResponsiveContainer>
+    </ResponsiveContainer> 
+  
    )
 }
  

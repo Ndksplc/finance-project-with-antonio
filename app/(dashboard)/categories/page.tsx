@@ -12,6 +12,7 @@ import { useGetCategories } from "@/app/features/categories/api/use-get-categori
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBulkDeleteCategories } from "@/app/features/categories/api/use-delete-bulk-categories";
 import { useNewCategory } from "@/app/features/categories/hooks/use-new-category";
+import { Suspense } from "react";
  
 
 
@@ -41,30 +42,32 @@ const CategoriesPage = () => {
   )
 
   return (
-    <div className="max-w-screen-2xl mx-auto w-full pb-10 -m-24">
-      <Card className="border-none drop-shadow-sm">
-        <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between" >
-        <CardTitle className=" text-xl line-clamp-1">
-          Categories Page
-        </CardTitle>
-        <Button size="sm" onClick={newCategory.onOpen}>
-          <Plus className="size-4 mr-2"/>
-          Add New Category 
-        </Button>
-        </CardHeader>     
-        <CardContent>
-          <DataTable columns={columns}
-         data={categories}
-         filterKey="name" onDelete={(row)=>{
-          const ids = row.map((r)=>(r.original.id));
-          deleteBulkAccount.mutate({ids});
-         }}
-           disabled={isDisabled}
-          />
-        </CardContent>
-    </Card>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="max-w-screen-2xl mx-auto w-full pb-10 -m-24">
+        <Card className="border-none drop-shadow-sm">
+          <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between" >
+          <CardTitle className=" text-xl line-clamp-1">
+            Categories Page
+          </CardTitle>
+          <Button size="sm" onClick={newCategory.onOpen}>
+            <Plus className="size-4 mr-2"/>
+            Add New Category 
+          </Button>
+          </CardHeader>     
+          <CardContent>
+            <DataTable columns={columns}
+          data={categories}
+          filterKey="name" onDelete={(row)=>{
+            const ids = row.map((r)=>(r.original.id));
+            deleteBulkAccount.mutate({ids});
+          }}
+            disabled={isDisabled}
+            />
+          </CardContent>
+      </Card>
 
-    </div>
+      </div>
+    </Suspense>
   )
 }
  

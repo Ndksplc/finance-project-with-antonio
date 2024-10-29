@@ -8,6 +8,8 @@ import {Cell,
 import { formatPercent } from "@/lib/utils";
 import exp from "constants";
 import { CategorieTooltip } from "./categorieTooltip";
+import { useEffect, useState } from "react";
+import { is } from "drizzle-orm";
 
 const COLORS = ["#000000","#12C6FF", "#FF7A00", "#FF647F","#FF9354F"];
 
@@ -18,8 +20,15 @@ type Props = {
   }[]
 }
 export const PieVariant = ({data}:Props) => {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+  
   return (
-    <ResponsiveContainer width="100%" height={350}>
+    <>
+   {isMounted && 
+    <ResponsiveContainer width="100%"  height={350}>
       <PieChart >
         <Legend
         layout="horizontal"
@@ -73,7 +82,8 @@ export const PieVariant = ({data}:Props) => {
         
       </PieChart>
       
-    </ResponsiveContainer>
+    </ResponsiveContainer>}
+    </>
   )
 }
 

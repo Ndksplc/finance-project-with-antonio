@@ -12,6 +12,7 @@ import { DataTable } from "../components/data-table";
 import { useGetAccounts } from "@/app/features/accounts/api/use-get-accounts";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useBulkDeleteAccount } from "@/app/features/accounts/api/use-delete-bulk-account";
+import { Suspense } from "react";
  
 
 
@@ -41,30 +42,34 @@ const AccountsPage = () => {
   )
 
   return (
-    <div className="max-w-screen-2xl mx-auto w-full pb-10 -m-24">
-      <Card className="border-none drop-shadow-sm">
-      <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between" >
-        <CardTitle className=" text-xl line-clamp-1">
-          Account Page
-        </CardTitle>
-        <Button size="sm" onClick={newAccount.onOpen}>
-          <Plus className="size-4 mr-2"/>
-          Add New Account 
-        </Button>
-      </CardHeader>     
-       <CardContent>
-        <DataTable columns={columns}
-         data={accounts}
-         filterKey="name" onDelete={(row)=>{
-          const ids = row.map((r)=>(r.original.id));
-          deleteBulkAccount.mutate({ids});
-         }}
-         disabled={isDisabled}
-         />
-      </CardContent>
-    </Card>
+    <Suspense fallback={<div>Loading...</div>}>
 
-    </div>
+    
+      <div className="max-w-screen-2xl mx-auto w-full pb-10 -m-24">
+        <Card className="border-none drop-shadow-sm">
+        <CardHeader className="gap-y-2 lg:flex-row lg:items-center lg:justify-between" >
+          <CardTitle className=" text-xl line-clamp-1">
+            Account Page
+          </CardTitle>
+          <Button size="sm" onClick={newAccount.onOpen}>
+            <Plus className="size-4 mr-2"/>
+            Add New Account 
+          </Button>
+        </CardHeader>     
+        <CardContent>
+          <DataTable columns={columns}
+          data={accounts}
+          filterKey="name" onDelete={(row)=>{
+            const ids = row.map((r)=>(r.original.id));
+            deleteBulkAccount.mutate({ids});
+          }}
+          disabled={isDisabled}
+          />
+        </CardContent>
+      </Card>
+
+      </div>
+    </Suspense>  
   )
 }
  

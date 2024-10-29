@@ -9,6 +9,7 @@ import {
 import { QueryProviders } from "@/providers/query-providers";
 import SheetProviders from "@/providers/sheetProviders";
 import { Toaster } from "@/components/ui/sonner";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,7 +31,10 @@ export default function RootLayout({
           <QueryProviders>
             <SheetProviders/>
             <Toaster/>
-            {children}
+            <Suspense fallback={<div>Loading...</div>}>
+              {children}
+            </Suspense>
+            
           </QueryProviders>
             
         

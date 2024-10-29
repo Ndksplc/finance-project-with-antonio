@@ -8,6 +8,7 @@ import { DataCardLoading } from "./data-card";
 
 
 import DataCard from "./data-card";
+import { Suspense } from "react";
 const DataGrid = ()=>{
   const summaryQuery = useGetSummary();
   const { data } = summaryQuery;
@@ -29,7 +30,7 @@ const DataGrid = ()=>{
     )
   
   return (
-    
+    <Suspense fallback={<div>Loading...</div>}>
     <div className="grid grid-cols-1 lg:grid-cols-3
     gap-8 pb-2 mb-8">
       <DataCard 
@@ -54,6 +55,9 @@ const DataGrid = ()=>{
       variants = "default"
       dateRange={dateRangeLabel}/>
     </div>
+
+    </Suspense>
+    
     )
 }
  

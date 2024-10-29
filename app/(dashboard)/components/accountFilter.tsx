@@ -5,6 +5,7 @@ import { useGetAccounts } from "@/app/features/accounts/api/use-get-accounts";
 import qs from "query-string";
 import {useRouter, useSearchParams, usePathname} from "next/navigation";
 import { useGetSummary } from "@/app/features/summary/api/use-get-summary";
+import { Suspense } from "react";
 
 export const AccountFilter = () => {
 
@@ -42,29 +43,33 @@ export const AccountFilter = () => {
     
   
   return (
-    <Select
-    value={accountId}
-    onValueChange={onChange}
-    disabled={isLoadingAccounts || isLoadingSummary}>
-      <SelectTrigger className="
-        lg:w-auto h-9 rounded-md px-3 w-full
-        font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent
-        outline-none text-white focus:bg-white/30 transition">
-          <SelectValue placeholder="Select Account" />
+    <Suspense fallback={<div>Loading...</div>}>
+      <Select
+      value={accountId}
+      onValueChange={onChange}
+      disabled={isLoadingAccounts || isLoadingSummary}>
+        <SelectTrigger className="
+          lg:w-auto h-9 rounded-md px-3 w-full
+          font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent
+          outline-none text-white focus:bg-white/30 transition">
+            <SelectValue placeholder="Select Account" />
 
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="all">
-          All Accounts
-        </SelectItem>
-        {accounts?.map((account)=>(
-          <SelectItem key={account.id} value={account.id}>
-            {account.name}
-
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="all">
+            All Accounts
           </SelectItem>
-        ))}
-      </SelectContent>
+          {accounts?.map((account)=>(
+            <SelectItem key={account.id} value={account.id}>
+              {account.name}
 
-    </Select>
+            </SelectItem>
+          ))}
+        </SelectContent>
+
+      </Select>
+
+    </Suspense>
+      
   )
 }

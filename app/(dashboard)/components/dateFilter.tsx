@@ -6,7 +6,7 @@ import {DateRange} from "react-day-picker";
 import { ChevronDown } from "lucide-react";
 import qs from "query-string";
 import {useRouter, useSearchParams, usePathname} from "next/navigation";
-import { useGetSummary } from "@/app/features/summary/api/use-get-summary";
+import { Suspense } from "react";
 
 import { cn, formatDateRange } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -55,65 +55,68 @@ export const DateFilter = () => {
   
 
   return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <Button
-        disabled={false}
-        size="sm"
-        variant="outline"
-        className="lg:w-auto h-9 rounded-md px-3 w-full
-        font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent
-        outline-none text-white focus:bg-white/30 transition">
-          <span>{formatDateRange(paramState)}</span>
-          <ChevronDown className="ml-2 size-4
-          opacity-50"/>
+
+    <Suspense>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+          disabled={false}
+          size="sm"
+          variant="outline"
+          className="lg:w-auto h-9 rounded-md px-3 w-full
+          font-normal bg-white/10 hover:bg-white/20 hover:text-white border-none focus:ring-offset-0 focus:ring-transparent
+          outline-none text-white focus:bg-white/30 transition">
+            <span>{formatDateRange(paramState)}</span>
+            <ChevronDown className="ml-2 size-4
+            opacity-50"/>
 
 
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="lg:w-auto w-full
-      p-0"
-      align="start">
-        <Calendar
-        disabled={false}
-        initialFocus
-        mode="range"
-        defaultMonth={date?.from}
-        selected={date}
-        onSelect={setDate}
-        numberOfMonths={2}/>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="lg:w-auto w-full
+        p-0"
+        align="start">
+          <Calendar
+          disabled={false}
+          initialFocus
+          mode="range"
+          defaultMonth={date?.from}
+          selected={date}
+          onSelect={setDate}
+          numberOfMonths={2}/>
 
-        <div className="p-4 w-full 
-        flex items-center gap-x-2">
-          <PopoverClose asChild>
-            <Button
-            onClick={onReset}
-            disabled={!date?.from || !date?.to} 
-            className="w-full "
-            variant="outline"
-            >
-              Reset
+          <div className="p-4 w-full 
+          flex items-center gap-x-2">
+            <PopoverClose asChild>
+              <Button
+              onClick={onReset}
+              disabled={!date?.from || !date?.to} 
+              className="w-full "
+              variant="outline"
+              >
+                Reset
 
-            </Button>
+              </Button>
+              
+
+            </PopoverClose>
+            <PopoverClose asChild>
+              <Button
+              onClick={()=>pushToUrl(date)}
+              disabled={!date?.from || !date?.to} 
+              className="w-full "
+            
+              >
+                Apply
+
+              </Button>
+            </PopoverClose>
             
 
-          </PopoverClose>
-          <PopoverClose asChild>
-            <Button
-            onClick={()=>pushToUrl(date)}
-            disabled={!date?.from || !date?.to} 
-            className="w-full "
-           
-            >
-              Apply
+          </div>
 
-            </Button>
-          </PopoverClose>
-          
-
-        </div>
-
-      </PopoverContent>
-    </Popover>
+        </PopoverContent>
+      </Popover>
+    </Suspense> 
   )
 }
